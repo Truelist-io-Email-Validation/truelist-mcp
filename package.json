@@ -1,0 +1,53 @@
+{
+  "name": "truelist-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for Truelist email validation — use with Claude, Cursor, and VS Code",
+  "author": "Truelist <support@truelist.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/truelist/truelist-mcp.git"
+  },
+  "homepage": "https://truelist.io",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "email",
+    "email-validation",
+    "email-verification",
+    "truelist",
+    "claude",
+    "cursor",
+    "ai-tools"
+  ],
+  "type": "module",
+  "bin": {
+    "truelist-mcp": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint src/",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "truelist": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^8.57.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0"
+  }
+}
