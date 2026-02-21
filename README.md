@@ -114,12 +114,15 @@ Validate a single email address for deliverability.
 ```json
 {
   "email": "user@example.com",
-  "state": "valid",
-  "sub_state": "ok",
+  "state": "ok",
+  "sub_state": "email_ok",
   "suggestion": null,
-  "free_email": true,
-  "role": false,
-  "disposable": false,
+  "domain": "example.com",
+  "canonical": "user@example.com",
+  "mx_record": "mx.example.com",
+  "first_name": "Jane",
+  "last_name": "Doe",
+  "verified_at": "2026-02-21T12:00:00Z",
   "is_valid": true,
   "is_deliverable": true
 }
@@ -128,19 +131,21 @@ Validate a single email address for deliverability.
 **States:**
 | State | Meaning |
 |-------|---------|
-| `valid` | Email is deliverable |
-| `invalid` | Email is not deliverable |
+| `ok` | Email is deliverable |
+| `email_invalid` | Email is not deliverable |
 | `risky` | Email may be deliverable but has risk factors |
+| `accept_all` | Domain accepts all addresses; deliverability uncertain |
 | `unknown` | Could not determine deliverability |
 
 **Sub-states:**
 | Sub-state | Meaning |
 |-----------|---------|
-| `ok` | No issues found |
+| `email_ok` | No issues found |
 | `accept_all` | Domain accepts all addresses |
-| `disposable_address` | Temporary/disposable email |
-| `role_address` | Role-based address (info@, support@, etc.) |
+| `is_disposable` | Temporary/disposable email |
+| `is_role` | Role-based address (info@, support@, etc.) |
 | `failed_mx_check` | Domain has no mail server |
+| `failed_smtp_check` | SMTP verification failed |
 | `failed_spam_trap` | Known spam trap address |
 | `failed_no_mailbox` | Mailbox does not exist |
 | `failed_greylisted` | Server temporarily rejected |
@@ -167,20 +172,20 @@ Validate multiple email addresses in a single batch (max 50).
 [
   {
     "email": "user@example.com",
-    "state": "valid",
-    "sub_state": "ok",
+    "state": "ok",
+    "sub_state": "email_ok",
     "is_valid": true
   },
   {
     "email": "test@invalid.example",
-    "state": "invalid",
+    "state": "email_invalid",
     "sub_state": "failed_mx_check",
     "is_valid": false
   },
   {
     "email": "hello@gmail.com",
-    "state": "valid",
-    "sub_state": "ok",
+    "state": "ok",
+    "sub_state": "email_ok",
     "is_valid": true
   }
 ]
@@ -221,7 +226,7 @@ The server requires a `TRUELIST_API_KEY` environment variable. Make sure it's se
 
 ### Authentication errors
 
-Verify your API key is correct and active at [truelist.io](https://truelist.io). The key should be your server-side API key, not a form validation key.
+Verify your API key is correct and active at [truelist.io](https://truelist.io).
 
 ### Rate limiting
 
