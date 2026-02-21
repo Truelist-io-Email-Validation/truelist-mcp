@@ -9,13 +9,16 @@ function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ApiResult = Record<string, any>;
+
 export function registerTools(server: McpServer, client: Truelist) {
   server.tool(
     "validate_email",
-    "Validate an email address for deliverability using Truelist. Returns state (valid/invalid/risky/unknown), sub_state, and metadata like free_email, role, and disposable flags.",
+    "Validate an email address for deliverability using Truelist. Returns state (ok/email_invalid/risky/accept_all/unknown), sub_state, and metadata like domain, canonical, mx_record, first_name, last_name, and verified_at.",
     { email: z.string().email() },
     async ({ email }) => {
-      const result = await client.email.validate(email);
+      const result: ApiResult = await client.email.validate(email);
       return {
         content: [
           {
@@ -26,12 +29,17 @@ export function registerTools(server: McpServer, client: Truelist) {
                 state: result.state,
                 sub_state: result.subState,
                 suggestion: result.suggestion,
-                free_email: result.freeEmail,
-                role: result.role,
-                disposable: result.disposable,
-                is_valid: result.state === "valid",
+                domain: result.domain,
+                canonical: result.canonical,
+                mx_record: result.mxRecord,
+                first_name: result.firstName,
+                last_name: result.lastName,
+                verified_at: result.verifiedAt,
+                is_valid: result.state === "ok",
                 is_deliverable:
-                  result.state === "valid" || result.state === "risky",
+                  result.state === "ok" ||
+                  result.state === "risky" ||
+                  result.state === "accept_all",
               },
               null,
               2,
@@ -64,12 +72,12 @@ export function registerTools(server: McpServer, client: Truelist) {
         const batchResults = await Promise.all(
           batch.map(async (email) => {
             try {
-              const result = await client.email.validate(email);
+              const result: ApiResult = await client.email.validate(email);
               return {
                 email,
-                state: result.state,
-                sub_state: result.subState,
-                is_valid: result.state === "valid",
+                state: result.state as string,
+                sub_state: result.subState as string,
+                is_valid: result.state === "ok",
               };
             } catch (err) {
               const message =
@@ -77,7 +85,7 @@ export function registerTools(server: McpServer, client: Truelist) {
               return {
                 email,
                 state: "unknown",
-                sub_state: "unknown",
+                sub_state: "unknown_error",
                 is_valid: false,
                 error: message,
               };
@@ -100,7 +108,7 @@ export function registerTools(server: McpServer, client: Truelist) {
 
   server.tool(
     "check_account",
-    "Check your Truelist account info including current plan and remaining email validation credits.",
+    "Check your Truelist account info including name, email, plan, and admin status.",
     {},
     async () => {
       const account = await client.account.get();
