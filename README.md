@@ -8,7 +8,7 @@ This package exposes Truelist's email validation API as MCP tools. Once configur
 
 - Check if an email address is valid and deliverable
 - Validate batches of emails at once
-- Check your Truelist account credits and plan
+- Check your Truelist account info and plan
 
 ## Installation
 
@@ -193,7 +193,7 @@ Validate multiple email addresses in a single batch (max 50).
 
 ### check_account
 
-Check your Truelist account info including plan and remaining credits.
+Check your Truelist account info including name, email, plan, and admin status.
 
 **Input:** none
 
@@ -201,8 +201,11 @@ Check your Truelist account info including plan and remaining credits.
 ```json
 {
   "email": "you@company.com",
-  "plan": "pro",
-  "credits": 4850
+  "name": "Your Name",
+  "uuid": "a3828d19-...",
+  "timeZone": "America/New_York",
+  "isAdminRole": true,
+  "paymentPlan": "pro"
 }
 ```
 

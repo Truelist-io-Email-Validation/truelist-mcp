@@ -85,7 +85,7 @@ export function registerTools(server: McpServer, client: Truelist) {
               return {
                 email,
                 state: "unknown",
-                sub_state: "unknown",
+                sub_state: "unknown_error",
                 is_valid: false,
                 error: message,
               };
@@ -108,7 +108,7 @@ export function registerTools(server: McpServer, client: Truelist) {
 
   server.tool(
     "check_account",
-    "Check your Truelist account info including current plan and remaining email validation credits.",
+    "Check your Truelist account info including name, email, plan, and admin status.",
     {},
     async () => {
       const account = await client.account.get();
