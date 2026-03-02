@@ -1,5 +1,6 @@
 # truelist-mcp
 
+[![Free tier](https://img.shields.io/badge/free_plan-100_validations-4A7C59?style=flat-square)](https://truelist.io/pricing)
 MCP (Model Context Protocol) server for [Truelist](https://truelist.io) email validation. Lets AI assistants like Claude, Cursor, and VS Code Copilot validate email addresses for deliverability.
 
 ## What is this?
@@ -9,6 +10,10 @@ This package exposes Truelist's email validation API as MCP tools. Once configur
 - Check if an email address is valid and deliverable
 - Validate batches of emails at once
 - Check your Truelist account info and plan
+
+> **Start free** — 100 validations + 10 enhanced credits, no credit card required.
+> [Get your API key →](https://app.truelist.io/signup?utm_source=github&utm_medium=readme&utm_campaign=free-plan&utm_content=truelist-mcp)
+> Works with the free plan.
 
 ## Installation
 
@@ -235,6 +240,10 @@ Verify your API key is correct and active at [truelist.io](https://truelist.io).
 
 Truelist enforces rate limits on the API. If you hit rate limits, the SDK will automatically retry with exponential backoff. For batch validation, emails are validated concurrently so large batches may trigger rate limits.
 
+
+## Getting Started
+
+Sign up for a [free Truelist account](https://app.truelist.io/signup?utm_source=github&utm_medium=readme&utm_campaign=free-plan&utm_content=truelist-mcp) to get your API key. The free plan includes 100 validations and 10 enhanced credits — no credit card required.
 ## License
 
 MIT
